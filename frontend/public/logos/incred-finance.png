@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <script>
+      const windowLocation = window.location;
+
+      const redirectingURL = {
+        'swiggy-auto': `business-loans/swiggy/swiggy-auto/index.html`,
+        'amazon-seller': `business-loans/amazon-seller/`,
+        'amazon-rbf': `business-loans/amazon-rbf/`,
+        'shiprocket-pre-approved': `business-loans/shiprocket-pre-approved/`,
+        'swiggy-embedded': `business-loans/swiggy/swiggy-embedded/`,
+      };
+
+      let subArr = Object.keys(redirectingURL).filter((str) => windowLocation.pathname.includes(str));
+      subArr = subArr.length > 0 ? subArr : [];
+
+      if (subArr.length > 0) {
+        window.location.replace('/' + redirectingURL[subArr[0]] + windowLocation.search);
+      } else {
+        if (windowLocation.pathname.includes('home')) {
+          let url = windowLocation.pathname.replace('home/', '');
+          url = url.replace('home', '');
+          window.location.replace(url + windowLocation.search);
+        } else {
+          window.location.replace(`/404/?url=${windowLocation.pathname}${windowLocation.search}`);
+        }
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

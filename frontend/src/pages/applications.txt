@@ -1,0 +1,219 @@
+<TabsContent value="applications" className="space-y-6">
+            {/* Filter and Export */}
+            <Card data-testid="filter-export-card">
+              <CardHeader>
+                <div className="flex gap-2 mb-4">
+                  <Button
+                    variant={activeAppType === "loan" ? "default" : "outline"}
+                    onClick={() => setActiveAppType("loan")}
+                  >
+                    Loan Applications
+                  </Button>
+
+                  <Button
+                    variant={activeAppType === "insurance" ? "default" : "outline"}
+                    onClick={() => setActiveAppType("insurance")}
+                  >
+                    Insurance Applications
+                  </Button>
+                </div>
+
+                <CardTitle>Filter & Export</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1">
+                    <Label htmlFor="agent-filter">Filter by Agent</Label>
+                    <Select value={selectedAgent} onValueChange={setSelectedAgent}>
+                      <SelectTrigger id="agent-filter" data-testid="agent-filter-select">
+                        <SelectValue placeholder="Select agent" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all" data-testid="filter-all">All Agents</SelectItem>
+                        {agents.map((agent) => (
+                          <SelectItem key={agent.agentId} value={agent.agentId} data-testid={`filter-${agent.agentId}`}>
+                            {agent.name} ({agent.agentId})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-end">
+                    <Button onClick={handleExport} data-testid="export-excel-button" className="w-full md:w-auto">
+                      <Download className="h-4 w-4 mr-2" />
+                      Export to Excel
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Applications List */}
+            <Card data-testid="applications-list-card">
+              <CardHeader>
+                <CardTitle>
+                  {activeAppType === "loan"
+                    ? `Loan Applications (${filteredApplications.length})`
+                    : `Insurance Applications (${insuranceApplications.length})`}
+                </CardTitle>
+
+              </CardHeader>
+              <CardContent>
+                {/* LOAN APPLICATIONS */}
+                {activeAppType === "loan" && (
+                  filteredApplications.length === 0 ? (
+                    <p className="text-center text-gray-500 py-8">
+                      No loan applications found
+                    </p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Agent ID</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Name</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Loan Type</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Mobile</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Income</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Status</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Disbursed</th>
+                            <th className="px-4 py-3 text-left font-semibold text-gray-700">Date</th>
+                          </tr>
+                        </thead>
+
+                        <tbody className="divide-y divide-gray-200">
+                          {filteredApplications.map((app, idx) => (
+                            <tr key={app.id || idx} className="hover:bg-gray-50">
+                              <td className="px-4 py-3 font-mono text-xs">{app.agentId}</td>
+                              <td className="px-4 py-3">{app.fullName}</td>
+                              <td className="px-4 py-3">{app.loanType}</td>
+                              <td className="px-4 py-3">{app.mobile}</td>
+                              <td className="px-4 py-3">{app.email}</td>
+                              <td className="px-4 py-3">
+                                ₹{app.monthlyIncome?.toLocaleString()}
+                              </td>
+
+                              {/* STATUS (ADMIN CONTROL) */}
+                              <td className="px-4 py-3">
+                                <Select
+                                  value={app.status}
+                                  onValueChange={(value) =>
+                                    handleUpdateApplication(app.id, { status: value })
+                                  }
+                                >
+                                  <SelectTrigger className="w-28">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="logged">Logged</SelectItem>
+                                    <SelectItem value="approved">Approved</SelectItem>
+                                    <SelectItem value="rejected">Rejected</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </td>
+                                
+                              {/* DISBURSED AMOUNT (ADMIN CONTROL) */}
+                              <td className="px-4 py-3">
+                                <Input
+                                  type="number"
+                                  className="w-28"
+                                  defaultValue={app.disbursedAmount || ""}
+                                  placeholder="₹ Amount"
+                                  disabled={app.status !== "approved"}
+                                  onBlur={(e) =>
+                                    handleUpdateApplication(app.id, {
+                                      disbursedAmount: Number(e.target.value),
+                                    })
+                                  }
+                                />
+                              </td>
+                                
+                              <td className="px-4 py-3 text-xs text-gray-500">
+                                {new Date(app.createdAt).toLocaleDateString()}
+                              </td>
+                                
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )
+                )}
+
+                {/* INSURANCE APPLICATIONS */}
+                {activeAppType === "insurance" && (
+                  insuranceApplications.length === 0 ? (
+                    <p className="text-center text-gray-500 py-8">
+                      No insurance applications found
+                    </p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-3">Agent ID</th>
+                            <th className="px-4 py-3">Name</th>
+                            <th className="px-4 py-3">Insurance Type</th>
+                            <th className="px-4 py-3">Mobile</th>
+                            <th className="px-4 py-3">Email</th>
+                            <th className="px-4 py-3">Status</th>
+                            <th className="px-4 py-3">Disbursed</th>
+                            <th className="px-4 py-3">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {insuranceApplications.map((app, idx) => (
+                            <tr key={idx}>
+                              <td className="px-4 py-3">{app.agentId}</td>
+                              <td className="px-4 py-3">{app.fullName}</td>
+                              <td className="px-4 py-3">{app.insuranceType}</td>
+                              <td className="px-4 py-3">{app.mobile}</td>
+                              <td className="px-4 py-3">{app.email}</td>
+                              <td className="px-4 py-3">
+                                <Select
+                                  value={app.status}
+                                  onValueChange={(value) =>
+                                    handleUpdateApplication(app.id, { status: value })
+                                  }
+                                >
+                                  <SelectTrigger className="w-28">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="logged">Logged</SelectItem>
+                                    <SelectItem value="approved">Approved</SelectItem>
+                                    <SelectItem value="rejected">Rejected</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </td>
+                                
+                              <td className="px-4 py-3">
+                                <Input
+                                  type="number"
+                                  className="w-28"
+                                  defaultValue={app.disbursedAmount || ""}
+                                  disabled={app.status !== "approved"}
+                                  onBlur={(e) =>
+                                    handleUpdateApplication(app.id, {
+                                      disbursedAmount: Number(e.target.value),
+                                    })
+                                  }
+                                />
+                              </td>
+                                
+                              <td className="px-4 py-3">
+                                {new Date(app.createdAt).toLocaleDateString()}
+                              </td>
+                                
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )
+                )}
+
+              </CardContent>
+            </Card>
+          </TabsContent>

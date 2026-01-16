@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { FileText, Loader2 } from "lucide-react";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 const API = `${BACKEND_URL}/api`;
 
 const loanTypes = [
@@ -69,6 +69,8 @@ const LoanForm = () => {
     return /^[6-9]\d{9}$/.test(mobile);
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,17 +92,39 @@ const LoanForm = () => {
 
     setLoading(true);
     try {
-      const payload = {
-        ...formData,
-        monthlyIncome: parseFloat(formData.monthlyIncome)
-      };
+      // const payload = {
+      //   ...formData,
+      //   monthlyIncome: parseFloat(formData.monthlyIncome)
+      // };
+        const payload = {
+          agentId: formData.agentId,
+          loanType: formData.loanType,
+          fullName: formData.fullName,
+          pan: formData.panNumber,          // ✅ FIX
+          aadhaar: formData.aadhaarNumber,  // ✅ FIX
+          mobile: formData.mobile,
+          dob: formData.dob,
+          address: formData.address,
+          employmentType: formData.employmentType,
+          monthlyIncome: Number(formData.monthlyIncome),
+          email: formData.email
+        };
+
       
       await axios.post(`${API}/loan-applications`, payload);
       toast.success("Application submitted successfully!");
       navigate("/success");
     } catch (error) {
+
       console.error("Error submitting application:", error);
-      toast.error(error.response?.data?.detail || "Failed to submit application");
+      // toast.error(error.response?.data?.detail || "Failed to submit application");
+      const message =
+        error?.response?.data?.detail?.[0]?.msg ||
+        error?.response?.data?.message ||
+        "Failed to submit application";
+
+      toast.error(message);
+
     } finally {
       setLoading(false);
     }

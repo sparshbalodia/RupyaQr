@@ -1,10 +1,17 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
+import { useEffect } from "react";
+
 
 const FormSuccess = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center px-4">
@@ -28,14 +35,14 @@ const FormSuccess = () => {
               Thank you for applying! Our team will review your application and contact you within 2-3 business days.
             </p>
           </div>
-          <Button 
+          {/* <Button 
             onClick={() => navigate("/")} 
             variant="outline" 
             className="w-full"
             data-testid="back-home-button"
           >
             Back to Home
-          </Button>
+          </Button> */}
         </CardContent>
       </Card>
     </div>
