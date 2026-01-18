@@ -34,7 +34,7 @@ const LandingPage = () => {
         <Button 
           variant="ghost" 
           className="text-zinc-400 hover:text-white hover:bg-white/10 transition-colors rounded-full px-6"
-          onClick={() => navigate('/admin')} // Assuming admin is on /admin route now
+          onClick={() => navigate('/agent-login')} // Assuming admin is on /admin route now
         >
           Agent Login
         </Button>
@@ -52,7 +52,7 @@ const LandingPage = () => {
           </div>
           
           <p className={`text-zinc-400 text-lg md:text-xl max-w-lg mx-auto lg:mx-0 transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Aapki har jarurat ka sathi. Experience instant loan approvals with our AI-powered verification engine.
+            Aapki har jarurat ka sathi.
           </p>
 
           {/* Social Proof / Trust Badge */}

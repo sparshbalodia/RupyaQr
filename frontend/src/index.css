@@ -113,3 +113,10 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+
+@layer utilities {
+  .tracking-tighter {
+    letter-spacing: -0.05em;
+  }
+}
