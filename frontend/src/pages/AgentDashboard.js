@@ -616,12 +616,247 @@
 //  export default AgentDashboard;
 
 
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+// import { Button } from "@/components/ui/button";
+// import { LogOut, ArrowUpRight, CheckCircle2, XCircle, Clock } from "lucide-react";
+
+// const logos = [
+//   "/logos/bandhan-bank.png", "/logos/chola-finance.png", "/logos/fibe.png",
+//   "/logos/finnable.png", "/logos/godrej-capital.png", "/logos/hdfc-bank.png",
+//   "/logos/icici-bank.png", "/logos/indusind-bank.png", "/logos/kissht-finance.png",
+//   "/logos/kotak-mahindra-bank.png", "/logos/kreditbee.png", "/logos/lt-finance.png",
+//   "/logos/money-view.png", "/logos/muthoot-finance.png", "/logos/piramal-finance.png",
+//   "/logos/poonawalla-fincorp.png", "/logos/prefer.png", "/logos/sbi-bank.png",
+//   "/logos/smartcoin.png"
+// ];
+
+// const mid = Math.ceil(logos.length / 2);
+// const topRow = logos.slice(0, mid);
+// const bottomRow = logos.slice(mid);
+
+// const API = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
+
+// const AgentDashboard = () => {
+//   const [applications, setApplications] = useState([]);
+//   const navigate = useNavigate();
+//   const [agentName, setAgentName] = useState("");
+
+//   useEffect(() => {
+//     const agentId = localStorage.getItem("agentId");
+//     const name = localStorage.getItem("agentName");
+
+//     if (!agentId) {
+//       navigate("/agent-login");
+//       return;
+//     }
+
+//     setAgentName(name || "Agent");
+//     fetchApplications(agentId);
+    
+//     // Setup back button prevention
+//     window.history.pushState(null, "", window.location.href);
+//     window.onpopstate = () => {
+//         navigate("/agent-login", { replace: true });
+//     };
+//   }, []);
+
+//   const fetchApplications = async (agentId) => {
+//     try {
+//       const res = await axios.get(`${API}/applications/agent/${agentId}`);
+//       setApplications(res.data);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("agentId");
+//     localStorage.removeItem("agentName");
+//     navigate("/agent-login", { replace: true });
+//   };
+
+//   const totalCount = applications.length;
+//   const approvedCount = applications.filter(a => a.status === "approved").length;
+//   const rejectedCount = applications.filter(a => a.status === "rejected").length;
+
+//   return (
+//     <div className="min-h-screen bg-black text-white font-sans selection:bg-zinc-800 overflow-x-hidden">
+      
+//       {/* Top Navigation */}
+//       <nav className="border-b border-white/10 px-6 py-6 sticky top-0 bg-black/80 backdrop-blur-md z-40">
+//         <div className="max-w-7xl mx-auto flex justify-between items-center">
+//             <div>
+//                 <span className="text-xl font-bold tracking-tighter">RUPYA.</span>
+//                 <span className="ml-3 text-xs font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded">AGENT PORTAL</span>
+//             </div>
+//             <div className="flex items-center gap-6">
+//                 <span className="hidden sm:inline-block text-zinc-400 text-sm">Logged in as <span className="text-white font-medium">{agentName}</span></span>
+//                 <Button 
+//                     variant="ghost" 
+//                     onClick={handleLogout}
+//                     className="text-zinc-400 hover:text-white hover:bg-white/10 rounded-full px-4 h-10"
+//                 >
+//                     <LogOut className="w-4 h-4 mr-2" />
+//                     Logout
+//                 </Button>
+//             </div>
+//         </div>
+//       </nav>
+
+//       <main className="max-w-7xl mx-auto px-6 py-12 space-y-16">
+        
+//         {/* Welcome Section */}
+//         <div className="space-y-2">
+//             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Dashboard Overview</h1>
+//             <p className="text-zinc-400 text-lg">Track your performance and application status in real-time.</p>
+//         </div>
+
+//         {/* Stats Grid - High Impact Numbers */}
+//         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//             <StatCard label="Total Applications" value={totalCount} delay={0} />
+//             <StatCard label="Approved" value={approvedCount} type="success" delay={100} />
+//             <StatCard label="Rejected" value={rejectedCount} type="danger" delay={200} />
+//         </div>
+
+//         {/* Applications List */}
+//         <div className="space-y-6">
+//             <div className="flex items-center justify-between border-b border-white/10 pb-4">
+//                 <h2 className="text-2xl font-semibold">Recent Applications</h2>
+//                 <span className="text-xs text-zinc-500 uppercase tracking-wider">Live Data</span>
+//             </div>
+
+//             {applications.length === 0 ? (
+//                  <div className="py-20 text-center border border-dashed border-zinc-800 rounded-2xl">
+//                     <p className="text-zinc-500">No applications submitted yet.</p>
+//                  </div>
+//             ) : (
+//                 <div className="overflow-x-auto">
+//                     <table className="w-full text-left border-collapse">
+//                         <thead>
+//                             <tr className="text-xs text-zinc-500 uppercase tracking-widest border-b border-zinc-800">
+//                                 <th className="px-4 py-4 font-medium">Applicant</th>
+//                                 <th className="px-4 py-4 font-medium">Details</th>
+//                                 <th className="px-4 py-4 font-medium text-right">Income</th>
+//                                 <th className="px-4 py-4 font-medium text-right">Status</th>
+//                             </tr>
+//                         </thead>
+//                         <tbody className="divide-y divide-zinc-800/50">
+//                             {applications.map((app, index) => (
+//                                 <tr key={app.id || index} className="group hover:bg-white/5 transition-colors">
+//                                     <td className="px-4 py-6">
+//                                         <div className="font-medium text-lg">{app.fullName}</div>
+//                                         <div className="text-zinc-500 text-sm">{app.mobile}</div>
+//                                     </td>
+//                                     <td className="px-4 py-6">
+//                                         <div className="text-zinc-300">{app.loanType || app.type}</div>
+//                                         <div className="text-xs text-zinc-600 font-mono mt-1">ID: #{index + 1}</div>
+//                                     </td>
+//                                     <td className="px-4 py-6 text-right">
+//                                         <div className="font-mono text-zinc-300">₹{app.monthlyIncome?.toLocaleString()}</div>
+//                                         {app.disbursedAmount && (
+//                                             <div className="text-xs text-green-500 mt-1">Disbursed: ₹{app.disbursedAmount.toLocaleString()}</div>
+//                                         )}
+//                                     </td>
+//                                     <td className="px-4 py-6 text-right">
+//                                         <StatusBadge status={app.status} />
+//                                     </td>
+//                                 </tr>
+//                             ))}
+//                         </tbody>
+//                     </table>
+//                 </div>
+//             )}
+//         </div>
+//       </main>
+
+//       {/* High Contrast Marquee Section */}
+//       <div className="w-full bg-white text-black py-12 mt-20 overflow-hidden">
+//          <div className="max-w-7xl mx-auto px-6 mb-8">
+//             <p className="text-sm font-bold tracking-widest uppercase border-b border-black pb-2 inline-block">Our Banking Partners</p>
+//          </div>
+         
+//          {/* Marquee Container */}
+//          <div className="flex flex-col gap-8 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+//             <div className="flex w-max gap-16 animate-marquee-ltr">
+//                 {[...topRow, ...topRow].map((logo, i) => (
+//                   <img key={i} src={logo} alt="" className="h-10 object-contain flex-shrink-0" />
+//                 ))}
+//             </div>
+//             <div className="flex w-max gap-16 animate-marquee-rtl">
+//                 {[...bottomRow, ...bottomRow].map((logo, i) => (
+//                   <img key={i} src={logo} alt="" className="h-10 object-contain flex-shrink-0" />
+//                 ))}
+//             </div>
+//          </div>
+//       </div>
+
+//       <style>{`
+//           @keyframes marquee-ltr { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+//           @keyframes marquee-rtl { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+//           .animate-marquee-ltr { animation: marquee-ltr 40s linear infinite; }
+//           .animate-marquee-rtl { animation: marquee-rtl 40s linear infinite; }
+//       `}</style>
+//     </div>
+//   );
+// };
+
+// // Helper Components for Cleaner Main Code
+// const StatCard = ({ label, value, type = "default", delay }) => {
+//     const colors = {
+//         default: "bg-zinc-900 border-zinc-800 text-white",
+//         success: "bg-zinc-900 border-zinc-800 text-white", // Keeping bg dark, changing accent text only for elegance
+//         danger: "bg-zinc-900 border-zinc-800 text-white"
+//     };
+    
+//     const textColors = {
+//         default: "text-zinc-500",
+//         success: "text-green-500",
+//         danger: "text-red-500"
+//     };
+
+//     return (
+//         <div 
+//             className={`p-8 rounded-2xl border ${colors[type]} hover:border-zinc-600 transition-all duration-500`}
+//             style={{ animationDelay: `${delay}ms` }}
+//         >
+//             <p className="text-xs uppercase tracking-widest font-semibold text-zinc-500 mb-4">{label}</p>
+//             <div className="flex items-baseline gap-2">
+//                 <span className="text-5xl font-bold tracking-tighter">{value}</span>
+//                 {type === 'success' && <ArrowUpRight className="w-5 h-5 text-green-500" />}
+//             </div>
+//         </div>
+//     );
+// };
+
+// const StatusBadge = ({ status }) => {
+//     const styles = {
+//         approved: { icon: CheckCircle2, color: "text-green-400", bg: "bg-green-400/10", label: "Approved" },
+//         rejected: { icon: XCircle, color: "text-red-400", bg: "bg-red-400/10", label: "Rejected" },
+//         pending: { icon: Clock, color: "text-yellow-400", bg: "bg-yellow-400/10", label: "Pending" }
+//     };
+
+//     const config = styles[status] || styles.pending;
+//     const Icon = config.icon;
+
+//     return (
+//         <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${config.bg} border border-white/5`}>
+//             <Icon className={`w-3 h-3 ${config.color}`} />
+//             <span className={`text-xs font-medium ${config.color}`}>{config.label}</span>
+//         </div>
+//     );
+// };
+
+// export default AgentDashboard;
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, ArrowUpRight, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { LogOut, ArrowUpRight, CheckCircle2, XCircle, Clock, Wallet, Users, LayoutGrid } from "lucide-react";
 
+// Banking Partners Logos
 const logos = [
   "/logos/bandhan-bank.png", "/logos/chola-finance.png", "/logos/fibe.png",
   "/logos/finnable.png", "/logos/godrej-capital.png", "/logos/hdfc-bank.png",
@@ -655,7 +890,7 @@ const AgentDashboard = () => {
     setAgentName(name || "Agent");
     fetchApplications(agentId);
     
-    // Setup back button prevention
+    // Prevent back navigation
     window.history.pushState(null, "", window.location.href);
     window.onpopstate = () => {
         navigate("/agent-login", { replace: true });
@@ -682,84 +917,121 @@ const AgentDashboard = () => {
   const rejectedCount = applications.filter(a => a.status === "rejected").length;
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-zinc-800 overflow-x-hidden">
+    <div className="min-h-screen bg-rupya-50/30 text-rupya-950 font-sans selection:bg-rupya-200">
       
-      {/* Top Navigation */}
-      <nav className="border-b border-white/10 px-6 py-6 sticky top-0 bg-black/80 backdrop-blur-md z-40">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div>
-                <span className="text-xl font-bold tracking-tighter">RUPYA.</span>
-                <span className="ml-3 text-xs font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded">AGENT PORTAL</span>
+      {/* Navbar */}
+      <nav className="border-b border-rupya-200/50 bg-white/80 backdrop-blur-xl sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-rupya-700 rounded-lg flex items-center justify-center text-white font-bold">R</div>
+                <span className="text-xl font-bold tracking-tight text-rupya-950">RUPYA.</span>
             </div>
-            <div className="flex items-center gap-6">
-                <span className="hidden sm:inline-block text-zinc-400 text-sm">Logged in as <span className="text-white font-medium">{agentName}</span></span>
+            <div className="flex items-center gap-4">
+                <div className="hidden sm:flex flex-col items-end mr-2">
+                    <span className="text-sm font-semibold text-rupya-900">{agentName}</span>
+                    <span className="text-xs text-rupya-500 uppercase tracking-wider">Authorized Agent</span>
+                </div>
                 <Button 
                     variant="ghost" 
                     onClick={handleLogout}
-                    className="text-zinc-400 hover:text-white hover:bg-white/10 rounded-full px-4 h-10"
+                    className="text-rupya-600 hover:text-rupya-900 hover:bg-rupya-100 rounded-full h-10 w-10 p-0"
                 >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
+                    <LogOut className="w-5 h-5" />
                 </Button>
             </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-6 py-12 space-y-16">
+      <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
         
-        {/* Welcome Section */}
-        <div className="space-y-2">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Dashboard Overview</h1>
-            <p className="text-zinc-400 text-lg">Track your performance and application status in real-time.</p>
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <h1 className="text-4xl font-bold tracking-tight text-rupya-950">Overview</h1>
+                <p className="text-rupya-600 mt-1">Real-time application metrics.</p>
+            </div>
+            <Button className="bg-rupya-700 hover:bg-rupya-800 text-white rounded-full px-6 shadow-lg shadow-rupya-700/20">
+                <LayoutGrid className="w-4 h-4 mr-2" /> View Reports
+            </Button>
         </div>
 
-        {/* Stats Grid - High Impact Numbers */}
+        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <StatCard label="Total Applications" value={totalCount} delay={0} />
-            <StatCard label="Approved" value={approvedCount} type="success" delay={100} />
-            <StatCard label="Rejected" value={rejectedCount} type="danger" delay={200} />
+            <StatCard 
+                label="Total Applications" 
+                value={totalCount} 
+                icon={Users}
+                color="text-rupya-700"
+                delay={0} 
+            />
+            <StatCard 
+                label="Approved Loans" 
+                value={approvedCount} 
+                icon={CheckCircle2}
+                color="text-rupya-700" 
+                trend="positive"
+                delay={100} 
+            />
+            <StatCard 
+                label="Rejected" 
+                value={rejectedCount} 
+                icon={XCircle}
+                color="text-red-600"
+                delay={200} 
+            />
         </div>
 
-        {/* Applications List */}
-        <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <h2 className="text-2xl font-semibold">Recent Applications</h2>
-                <span className="text-xs text-zinc-500 uppercase tracking-wider">Live Data</span>
+        {/* Applications Table */}
+        <div className="bg-white rounded-3xl border border-rupya-100 shadow-xl shadow-rupya-900/5 overflow-hidden">
+            <div className="px-8 py-6 border-b border-rupya-50 flex items-center justify-between bg-rupya-50/30">
+                <h2 className="text-lg font-bold text-rupya-900">Recent Activity</h2>
+                <div className="flex gap-2">
+                     <span className="w-3 h-3 bg-rupya-500 rounded-full animate-pulse"></span>
+                     <span className="text-xs font-medium text-rupya-600">Live Updates</span>
+                </div>
             </div>
 
             {applications.length === 0 ? (
-                 <div className="py-20 text-center border border-dashed border-zinc-800 rounded-2xl">
-                    <p className="text-zinc-500">No applications submitted yet.</p>
+                 <div className="py-24 text-center">
+                    <div className="w-16 h-16 bg-rupya-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Wallet className="w-8 h-8 text-rupya-300" />
+                    </div>
+                    <p className="text-rupya-400 font-medium">No applications found.</p>
                  </div>
             ) : (
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="text-xs text-zinc-500 uppercase tracking-widest border-b border-zinc-800">
-                                <th className="px-4 py-4 font-medium">Applicant</th>
-                                <th className="px-4 py-4 font-medium">Details</th>
-                                <th className="px-4 py-4 font-medium text-right">Income</th>
-                                <th className="px-4 py-4 font-medium text-right">Status</th>
+                    <table className="w-full text-left">
+                        <thead className="bg-rupya-50/50">
+                            <tr className="text-xs text-rupya-500 uppercase tracking-wider">
+                                <th className="px-8 py-4 font-bold">Applicant</th>
+                                <th className="px-8 py-4 font-bold">Loan Type</th>
+                                <th className="px-8 py-4 font-bold text-right">Income (₹)</th>
+                                <th className="px-8 py-4 font-bold text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/50">
+                        <tbody className="divide-y divide-rupya-50">
                             {applications.map((app, index) => (
-                                <tr key={app.id || index} className="group hover:bg-white/5 transition-colors">
-                                    <td className="px-4 py-6">
-                                        <div className="font-medium text-lg">{app.fullName}</div>
-                                        <div className="text-zinc-500 text-sm">{app.mobile}</div>
+                                <tr key={app.id || index} className="group hover:bg-rupya-50/30 transition-colors">
+                                    <td className="px-8 py-5">
+                                        <div className="font-bold text-rupya-900">{app.fullName}</div>
+                                        <div className="text-rupya-400 text-sm font-medium">{app.mobile}</div>
                                     </td>
-                                    <td className="px-4 py-6">
-                                        <div className="text-zinc-300">{app.loanType || app.type}</div>
-                                        <div className="text-xs text-zinc-600 font-mono mt-1">ID: #{index + 1}</div>
+                                    <td className="px-8 py-5">
+                                        <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white border border-rupya-100 text-xs font-medium text-rupya-600 shadow-sm">
+                                            {app.loanType || app.type}
+                                        </div>
                                     </td>
-                                    <td className="px-4 py-6 text-right">
-                                        <div className="font-mono text-zinc-300">₹{app.monthlyIncome?.toLocaleString()}</div>
+                                    <td className="px-8 py-5 text-right">
+                                        <div className="font-mono font-semibold text-rupya-800">
+                                            {app.monthlyIncome?.toLocaleString()}
+                                        </div>
                                         {app.disbursedAmount && (
-                                            <div className="text-xs text-green-500 mt-1">Disbursed: ₹{app.disbursedAmount.toLocaleString()}</div>
+                                            <div className="text-xs text-rupya-600 mt-1">
+                                                Disbursed: ₹{app.disbursedAmount.toLocaleString()}
+                                            </div>
                                         )}
                                     </td>
-                                    <td className="px-4 py-6 text-right">
+                                    <td className="px-8 py-5 text-right">
                                         <StatusBadge status={app.status} />
                                     </td>
                                 </tr>
@@ -771,22 +1043,20 @@ const AgentDashboard = () => {
         </div>
       </main>
 
-      {/* High Contrast Marquee Section */}
-      <div className="w-full bg-white text-black py-12 mt-20 overflow-hidden">
-         <div className="max-w-7xl mx-auto px-6 mb-8">
-            <p className="text-sm font-bold tracking-widest uppercase border-b border-black pb-2 inline-block">Our Banking Partners</p>
+      {/* Partners Marquee */}
+      <div className="mt-20 border-t border-rupya-200 bg-white py-10 overflow-hidden">
+         <div className="max-w-7xl mx-auto px-6 mb-6">
+            <p className="text-xs font-bold tracking-widest uppercase text-rupya-400">Trusted By Leading Banks</p>
          </div>
-         
-         {/* Marquee Container */}
-         <div className="flex flex-col gap-8 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+         <div className="flex flex-col gap-8 opacity-70 hover:opacity-100 transition-opacity duration-500">
             <div className="flex w-max gap-16 animate-marquee-ltr">
                 {[...topRow, ...topRow].map((logo, i) => (
-                  <img key={i} src={logo} alt="" className="h-10 object-contain flex-shrink-0" />
+                  <img key={i} src={logo} alt="" className="h-8 object-contain flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" />
                 ))}
             </div>
             <div className="flex w-max gap-16 animate-marquee-rtl">
                 {[...bottomRow, ...bottomRow].map((logo, i) => (
-                  <img key={i} src={logo} alt="" className="h-10 object-contain flex-shrink-0" />
+                  <img key={i} src={logo} alt="" className="h-8 object-contain flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" />
                 ))}
             </div>
          </div>
@@ -802,48 +1072,62 @@ const AgentDashboard = () => {
   );
 };
 
-// Helper Components for Cleaner Main Code
-const StatCard = ({ label, value, type = "default", delay }) => {
-    const colors = {
-        default: "bg-zinc-900 border-zinc-800 text-white",
-        success: "bg-zinc-900 border-zinc-800 text-white", // Keeping bg dark, changing accent text only for elegance
-        danger: "bg-zinc-900 border-zinc-800 text-white"
-    };
-    
-    const textColors = {
-        default: "text-zinc-500",
-        success: "text-green-500",
-        danger: "text-red-500"
-    };
-
-    return (
-        <div 
-            className={`p-8 rounded-2xl border ${colors[type]} hover:border-zinc-600 transition-all duration-500`}
-            style={{ animationDelay: `${delay}ms` }}
-        >
-            <p className="text-xs uppercase tracking-widest font-semibold text-zinc-500 mb-4">{label}</p>
-            <div className="flex items-baseline gap-2">
-                <span className="text-5xl font-bold tracking-tighter">{value}</span>
-                {type === 'success' && <ArrowUpRight className="w-5 h-5 text-green-500" />}
+// Helper Components
+const StatCard = ({ label, value, icon: Icon, color, trend, delay }) => (
+    <div 
+        className="bg-white p-6 rounded-2xl border border-rupya-100 shadow-sm hover:shadow-lg hover:shadow-rupya-200/50 transition-all duration-300"
+        style={{ animationDelay: `${delay}ms` }}
+    >
+        <div className="flex items-start justify-between mb-4">
+            <div className={`p-3 rounded-xl bg-rupya-50 ${color}`}>
+                <Icon className="w-6 h-6" />
             </div>
+            {trend === 'positive' && (
+                <span className="flex items-center text-xs font-bold text-rupya-600 bg-rupya-100 px-2 py-1 rounded-full">
+                    <ArrowUpRight className="w-3 h-3 mr-1" /> +12%
+                </span>
+            )}
         </div>
-    );
-};
+        <div>
+            <p className="text-sm font-medium text-rupya-500">{label}</p>
+            <h3 className="text-3xl font-bold text-rupya-950 mt-1">{value}</h3>
+        </div>
+    </div>
+);
 
 const StatusBadge = ({ status }) => {
+    // Exact palette mapping for badges
     const styles = {
-        approved: { icon: CheckCircle2, color: "text-green-400", bg: "bg-green-400/10", label: "Approved" },
-        rejected: { icon: XCircle, color: "text-red-400", bg: "bg-red-400/10", label: "Rejected" },
-        pending: { icon: Clock, color: "text-yellow-400", bg: "bg-yellow-400/10", label: "Pending" }
+        approved: { 
+            icon: CheckCircle2, 
+            text: "text-rupya-800", 
+            bg: "bg-rupya-100", 
+            border: "border-rupya-200", 
+            label: "Approved" 
+        },
+        rejected: { 
+            icon: XCircle, 
+            text: "text-red-700", 
+            bg: "bg-red-50", 
+            border: "border-red-100", 
+            label: "Rejected" 
+        },
+        pending: { 
+            icon: Clock, 
+            text: "text-amber-700", 
+            bg: "bg-amber-50", 
+            border: "border-amber-100", 
+            label: "Pending" 
+        }
     };
 
     const config = styles[status] || styles.pending;
     const Icon = config.icon;
 
     return (
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${config.bg} border border-white/5`}>
-            <Icon className={`w-3 h-3 ${config.color}`} />
-            <span className={`text-xs font-medium ${config.color}`}>{config.label}</span>
+        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${config.bg} ${config.border} border shadow-sm`}>
+            <Icon className={`w-3.5 h-3.5 ${config.text}`} />
+            <span className={`text-xs font-bold ${config.text}`}>{config.label}</span>
         </div>
     );
 };

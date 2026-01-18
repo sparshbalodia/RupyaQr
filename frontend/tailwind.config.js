@@ -52,7 +52,21 @@ module.exports = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+            // --- ADDED RUPYA PALETTE HERE ---
+            rupya: {
+                50: '#F4F6EC',  // Light tint for backgrounds
+                100: '#AEB778', // Lightest Olive
+                200: '#A6B266',
+                300: '#9FAE55',
+                400: '#97A943',
+                500: '#8FA431', // Base Green
+                600: '#88A020', // Vivid Olive
+                700: '#809B0E', // Deepest Olive (Primary Brand Color)
+                800: '#5F730A', // Dark Hover
+                900: '#3E4C06', // Text/Border
+                950: '#1F2603', // Deep Background
+            }
   		},
   		keyframes: {
   			'accordion-down': {
