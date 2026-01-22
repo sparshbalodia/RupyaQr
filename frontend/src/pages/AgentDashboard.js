@@ -950,9 +950,9 @@ const AgentDashboard = () => {
                 <h1 className="text-4xl font-bold tracking-tight text-rupya-950">Overview</h1>
                 <p className="text-rupya-600 mt-1">Real-time application metrics.</p>
             </div>
-            <Button className="bg-rupya-700 hover:bg-rupya-800 text-white rounded-full px-6 shadow-lg shadow-rupya-700/20">
+            {/* <Button className="bg-rupya-700 hover:bg-rupya-800 text-white rounded-full px-6 shadow-lg shadow-rupya-700/20">
                 <LayoutGrid className="w-4 h-4 mr-2" /> View Reports
-            </Button>
+            </Button> */}
         </div>
 
         {/* Stats Grid */}
@@ -1084,7 +1084,7 @@ const StatCard = ({ label, value, icon: Icon, color, trend, delay }) => (
             </div>
             {trend === 'positive' && (
                 <span className="flex items-center text-xs font-bold text-rupya-600 bg-rupya-100 px-2 py-1 rounded-full">
-                    <ArrowUpRight className="w-3 h-3 mr-1" /> +12%
+                    
                 </span>
             )}
         </div>

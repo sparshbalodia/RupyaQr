@@ -61,7 +61,7 @@ const LandingPage = () => {
           </p>
 
           {/* Trust Indicators */}
-          <div className={`flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 pt-4 transition-all duration-1000 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+          {/* <div className={`flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 pt-4 transition-all duration-1000 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
             <div className="flex -space-x-3">
               {[1,2,3].map((i) => (
                 <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-rupya-100 flex items-center justify-center shadow-sm">
@@ -72,7 +72,7 @@ const LandingPage = () => {
             <div className="text-sm text-rupya-600 font-medium">
               Trusted by <span className="text-black font-bold text-base">10,000+</span> users across India
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Side: The "Get Started" Card */}
@@ -80,12 +80,12 @@ const LandingPage = () => {
           <div className="relative group">
             
             {/* Decorative Elements around card */}
-            <div className="absolute -top-12 -right-8 animate-bounce delay-700 duration-3000">
+            {/* <div className="absolute -top-12 -right-8 animate-bounce delay-700 duration-3000">
                 <div className="bg-white p-3 rounded-2xl shadow-xl shadow-rupya-200/50 flex items-center gap-2 border border-rupya-100">
                     <div className="bg-green-100 p-1.5 rounded-full"><TrendingUp size={16} className="text-green-600" /></div>
                     <span className="text-xs font-bold text-rupya-900">98% Approval Rate</span>
                 </div>
-            </div>
+            </div> */}
 
             {/* Glass Card */}
             <div className="relative bg-white/60 backdrop-blur-xl border border-white shadow-2xl shadow-rupya-900/10 p-8 rounded-3xl">

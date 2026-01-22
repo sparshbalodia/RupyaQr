@@ -331,7 +331,7 @@ const AgentLogin = () => {
                 <div className="relative group">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-rupya-400 group-focus-within:text-rupya-700 transition-colors" />
                     <Input
-                        placeholder="Ex: RUPYA-007"
+                        placeholder="Ex: VNDxxxxxxxx"
                         value={agentId}
                         onChange={(e) => setAgentId(e.target.value.trim())}
                         className="pl-12 h-14 bg-white border-rupya-200 focus-visible:ring-rupya-500 focus-visible:border-rupya-500 text-lg rounded-xl shadow-sm transition-all"
@@ -350,7 +350,7 @@ const AgentLogin = () => {
         </form>
 
         <div className="mt-8 pt-6 border-t border-rupya-100 text-center">
-            <p className="text-xs text-rupya-400 font-medium">Protected by Rupya Secure v2.0</p>
+            {/* <p className="text-xs text-rupya-400 font-medium">Protected by Rupya Secure v2.0</p> */}
         </div>
       </div>
     </div>
