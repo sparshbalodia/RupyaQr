@@ -176,6 +176,111 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ================= LOANS SECTION ================= */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-6">
+
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Loans designed for your needs
+            </h2>
+            <p className="mt-4 text-gray-600 text-lg">
+              Get quick access to loans with simple eligibility and transparent processing.
+            </p>
+          </div>
+
+          {/* Loan Cards */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <LoanCard
+              title="Personal Loan"
+              description="Instant funds for your personal expenses with minimal documentation."
+              points={[
+                "Loan up to ₹5 Lakhs",
+                "No collateral required",
+                "Fast approval",
+              ]}
+            />
+
+            <LoanCard
+              title="Business Loan"
+              description="Fuel your business growth with easy and flexible financing."
+              points={[
+                "Loan up to ₹50 Lakhs",
+                "Flexible repayment",
+                "Designed for MSMEs",
+              ]}
+            />
+
+            <LoanCard
+              title="Instant Credit"
+              description="Short-term credit solutions for urgent financial needs."
+              points={[
+                "Quick disbursal",
+                "Short tenure",
+                "Simple KYC",
+              ]}
+            />
+          </div>
+  
+            
+        </div>
+      </section>
+
+
+      {/* ================= INSURANCE SECTION ================= */}
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-6">
+
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Insurance that protects what matters
+            </h2>
+            <p className="mt-4 text-gray-600 text-lg">
+              Compare and apply for insurance plans easily with expert assistance via Rupya.
+            </p>
+          </div>
+
+          {/* Insurance Cards */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <InsuranceCard
+              title="Health Insurance"
+              description="Medical coverage for you and your family with cashless hospitalization."
+              points={[
+                "Cashless hospital network",
+                "Tax benefits under 80D",
+                "Covers critical illnesses",
+              ]}
+            />
+
+            <InsuranceCard
+              title="Life Insurance"
+              description="Secure your family’s future with reliable life cover plans."
+              points={[
+                "High life cover at low premium",
+                "Financial security for dependents",
+                "Flexible policy tenure",
+              ]}
+            />
+
+            <InsuranceCard
+              title="Motor Insurance"
+              description="Protect your vehicle against accidents, theft, and damages."
+              points={[
+                "Third-party & comprehensive cover",
+                "Instant policy issuance",
+                "Zero-depreciation add-ons",
+              ]}
+            />
+          </div>
+            
+        </div>
+      </section>
+
     </div>
   );
 };
@@ -217,5 +322,57 @@ const MobileDropdown = ({ label, open, toggle, items }) => (
     </div>
   </div>
 );
+
+const LoanCard = ({ title, description, points }) => {
+  return (
+    <div className="border rounded-2xl p-8 bg-white hover:shadow-lg transition">
+      <h3 className="text-xl font-bold">{title}</h3>
+
+      <p className="mt-3 text-gray-600">
+        {description}
+      </p>
+
+      <ul className="mt-6 space-y-2 text-gray-600">
+        {points.map((item) => (
+          <li key={item}>✔ {item}</li>
+        ))}
+      </ul>
+
+      <button
+        onClick={() => window.location.href = "/scan"}
+        className="mt-8 w-full border border-green-600 text-green-700 hover:bg-green-50 py-3 rounded-xl font-medium transition"
+      >
+        Apply Now
+      </button>
+    </div>
+  );
+};
+
+
+const InsuranceCard = ({ title, description, points }) => {
+  return (
+    <div className="border rounded-2xl p-8 bg-white hover:shadow-lg transition">
+      <h3 className="text-xl font-bold">{title}</h3>
+
+      <p className="mt-3 text-gray-600">
+        {description}
+      </p>
+
+      <ul className="mt-6 space-y-2 text-gray-600">
+        {points.map((item) => (
+          <li key={item}>✔ {item}</li>
+        ))}
+      </ul>
+
+      <button
+        onClick={() => window.location.href = "/scan"}
+        className="mt-8 w-full border border-green-600 text-green-700 hover:bg-green-50 py-3 rounded-xl font-medium transition"
+      >
+        Get Covered
+      </button>
+    </div>
+  );
+};
+
 
 export default LandingPage;
